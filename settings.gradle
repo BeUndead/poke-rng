@@ -1,0 +1,12 @@
+rootProject.name = 'spring-poke'
+
+include ':modules:rng',
+
+        ':modules:model',
+
+        ':modules:search:search-api',
+        ':modules:search:search-context',
+        ':modules:search:search-compute',
+
+        ':modules:ui:ui-components',
+        ':modules:ui:ui-standalone'

@@ -1,0 +1,20 @@
+group 'com.com.poke.ui'
+
+dependencies {
+    compile project(':modules:ui:ui-components')
+}
+
+task runnableJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gen7 Egg RNG Tool',
+                'Implementation-Version': '0.1.0',
+                'Main-Class': 'com.com.poke.ui.ApplicationRunner'
+    }
+    baseName = project.name + '-rng-tool'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}

@@ -1,0 +1,8 @@
+group 'com.com.poke.search'
+
+subprojects {
+    dependencies {
+        compile project(':modules:rng')
+        compile project(':modules:model')
+    }
+}

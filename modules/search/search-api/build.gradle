@@ -1,0 +1,5 @@
+group 'com.com.poke.search'
+
+dependencies {
+    compile project(':modules:search:search-context')
+}

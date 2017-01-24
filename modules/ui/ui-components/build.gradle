@@ -1,0 +1,9 @@
+group 'com.com.poke.ui'
+
+dependencies {
+    compile group: 'com.miglayout', name: 'miglayout', version: '3.7.4'
+
+    compile project(':modules:search:search-api')
+
+    compile project(':modules:search:search-compute')
+}

@@ -51,14 +51,14 @@ final class BallInheritanceTypeCalculator implements InheritanceTypeCalculator<B
 
         final int rngCallMod100 = rng.nextInt(100);
         if (rngCallMod100 < 50) {
-            if (maleContext.ball().canBeInherited()) {
-                return BallInheritanceTypes.Male;
+            if (femaleContext.ball().canBeInherited()) {
+                return BallInheritanceTypes.Female;
             } else {
                 return BallInheritanceTypes.NotInherited;
             }
         } else {
-            if (femaleContext.ball().canBeInherited()) {
-                return BallInheritanceTypes.Female;
+            if (maleContext.ball().canBeInherited()) {
+                return BallInheritanceTypes.Male;
             } else {
                 return BallInheritanceTypes.NotInherited;
             }

@@ -43,6 +43,13 @@ public interface MTRng {
     long advancements();
 
     /**
+     * The current internal array's state for this {@link MTRng}.
+     *
+     * @return The current internal array's state for this {@code MTRng}.
+     */
+    int[] state();
+
+    /**
      * Generates a copy of this {@link MTRng}, but with {@link #advancements()} reset.
      *
      * @return A new {@link MTRng} with the same state as this one, but with {@code advancements} reset.

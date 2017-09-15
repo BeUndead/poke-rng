@@ -91,7 +91,8 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
                         spread.pid().isPresent() ? Integer.toHexString(spread.pid().getAsInt()).toUpperCase() : "???",
                         spread.shinyValue().isPresent() ? spread.shinyValue().getAsInt() : "???",
                         Integer.toHexString(spread.encryptionConstant()).toUpperCase(),
-                        result.rngAdvancements()
+                        result.rngAdvancements(),
+                        stateToString(result.initialSeed())
                 }
         );
 
@@ -99,7 +100,6 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
 
     private void initComponents() {
 
-        final ResourceBundle bundle = ResourceBundle.getBundle("uiLocalisation");
         final JScrollPane resultsScrollPane = new JScrollPane();
 
         //======== this ========
@@ -111,7 +111,7 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
 
         //======== resultsScrollPane ========
         {
-            setBorder(new TitledBorder(bundle.getString("context.results")));
+            setBorder(new TitledBorder(BUNDLE.getString("context.results")));
 
             //---- resultsTable ----
             resultsTable.setModel(new DefaultTableModel(
@@ -131,7 +131,8 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
                             BUNDLE.getString("misc.pid"),
                             BUNDLE.getString("misc.sv"),
                             BUNDLE.getString("misc.encryptionConstant"),
-                            BUNDLE.getString("misc.used")
+                            BUNDLE.getString("misc.used"),
+                            BUNDLE.getString("context.seed")
                     }
             ) {
                 private final Class<?>[] columnTypes = new Class<?>[]{
@@ -149,7 +150,8 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
                         String.class,
                         Integer.class,
                         String.class,
-                        Integer.class
+                        Integer.class,
+                        String.class
                 };
 
                 @Override
@@ -171,48 +173,75 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
             final int maximumViewportWidth;
             {
                 final TableColumnModel columnModel = resultsTable.getColumnModel();
+
+                // Frame
                 columnModel.getColumn(0).setMinWidth(50);
                 columnModel.getColumn(0).setMaxWidth(80);
                 columnModel.getColumn(0).setPreferredWidth(60);
+                // Ability
                 columnModel.getColumn(1).setMinWidth(50);
                 columnModel.getColumn(1).setMaxWidth(80);
                 columnModel.getColumn(1).setPreferredWidth(60);
+                // Nature
                 columnModel.getColumn(2).setMinWidth(65);
                 columnModel.getColumn(2).setMaxWidth(110);
                 columnModel.getColumn(2).setPreferredWidth(80);
+                // Gender
                 columnModel.getColumn(3).setMinWidth(60);
                 columnModel.getColumn(3).setMaxWidth(90);
                 columnModel.getColumn(3).setPreferredWidth(60);
+                // Ball
                 columnModel.getColumn(4).setMinWidth(75);
                 columnModel.getColumn(4).setMaxWidth(110);
                 columnModel.getColumn(4).setPreferredWidth(80);
+                // IVs
+                // HP
                 columnModel.getColumn(5).setMinWidth(50);
                 columnModel.getColumn(5).setMaxWidth(70);
                 columnModel.getColumn(5).setPreferredWidth(50);
+                // Attack
                 columnModel.getColumn(6).setMinWidth(50);
                 columnModel.getColumn(6).setMaxWidth(70);
                 columnModel.getColumn(6).setPreferredWidth(50);
+                // Defense
                 columnModel.getColumn(7).setMinWidth(50);
                 columnModel.getColumn(7).setMaxWidth(70);
                 columnModel.getColumn(7).setPreferredWidth(50);
+                // Special Attack
                 columnModel.getColumn(8).setMinWidth(50);
                 columnModel.getColumn(8).setMaxWidth(70);
                 columnModel.getColumn(8).setPreferredWidth(50);
+                // Special Defense
                 columnModel.getColumn(9).setMinWidth(50);
                 columnModel.getColumn(9).setMaxWidth(70);
                 columnModel.getColumn(9).setPreferredWidth(50);
+                // Speed
                 columnModel.getColumn(10).setMinWidth(50);
                 columnModel.getColumn(10).setMaxWidth(70);
                 columnModel.getColumn(10).setPreferredWidth(50);
+                // PID
                 columnModel.getColumn(11).setMinWidth(80);
                 columnModel.getColumn(11).setMaxWidth(130);
                 columnModel.getColumn(11).setPreferredWidth(100);
+                // SV
                 columnModel.getColumn(12).setMinWidth(60);
                 columnModel.getColumn(12).setMaxWidth(90);
                 columnModel.getColumn(12).setPreferredWidth(70);
+                // Encryption Constant
                 columnModel.getColumn(13).setMinWidth(80);
                 columnModel.getColumn(13).setMaxWidth(130);
                 columnModel.getColumn(13).setPreferredWidth(100);
+                // Advancements
+                columnModel.getColumn(14).setMinWidth(50);
+                columnModel.getColumn(14).setMaxWidth(130);
+                columnModel.getColumn(14).setPreferredWidth(100);
+                // Seed
+//                columnModel.getColumn(15).setMinWidth(20);
+//                columnModel.getColumn(15).setMaxWidth(350);
+//                columnModel.getColumn(15).setPreferredWidth(100);
+
+                columnModel.getColumn(15).sizeWidthToFit();
+
 
                 int minWidth = 0;
                 int prefWidth = 0;
@@ -246,5 +275,18 @@ class ResultsPanel extends JPanel implements Consumer<Future<Collection<SearchRe
             resultsScrollPane.setViewportView(resultsTable);
         }
         add(resultsScrollPane, "cell 0 0,align center center,growy");
+    }
+
+
+    /**
+     * Converts the given {@code int array} to a hex-{@link String} (grouped in 8 character
+     * groups, left-padded by 0s, and separated by spaces).
+     *
+     * @param state The {@code int array} to convert.
+     *
+     * @return The seed, represented as a readable {@code String}.
+     */
+    private static String stateToString(final int[] state) {
+        return String.format("%08x %08x %08x %08x", state[0], state[1], state[2], state[3]).toUpperCase();
     }
 }

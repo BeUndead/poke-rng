@@ -15,6 +15,13 @@ public interface SearchResult {
     OffspringSpread offspringSpread();
 
     /**
+     * The (equivalent) seed of this {@link SearchResult}.
+     *
+     * @return The seed for this {@code SearchResult}.
+     */
+    int[] initialSeed();
+
+    /**
      * The number of frames advanced from the initial {@link MTRng} provided to the context at which this
      * {@link SearchResult} is generated.
      *

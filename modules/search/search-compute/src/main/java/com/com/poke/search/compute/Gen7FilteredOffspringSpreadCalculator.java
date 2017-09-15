@@ -1,19 +1,36 @@
 package com.com.poke.search.compute;
 
-import com.com.poke.model.*;
+import com.com.poke.model.AbilitySlot;
+import com.com.poke.model.Ball;
+import com.com.poke.model.BreedingItems;
+import com.com.poke.model.Gender;
+import com.com.poke.model.IVs;
+import com.com.poke.model.Nature;
 import com.com.poke.search.context.FilterContext;
 import com.com.poke.search.context.ParentsContext;
 import com.com.poke.search.context.SearchContext;
 import com.com.poke.search.context.TrainerContext;
 import com.com.rng.mt.MTRng;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import static com.com.poke.search.compute.Calculators.*;
+import static com.com.poke.search.compute.Calculators.abilitySlotCalculator;
+import static com.com.poke.search.compute.Calculators.ballCalculator;
+import static com.com.poke.search.compute.Calculators.encryptionConstantCalculator;
+import static com.com.poke.search.compute.Calculators.everstoneNatureCalculator;
+import static com.com.poke.search.compute.Calculators.genderCalculator;
+import static com.com.poke.search.compute.Calculators.ivsCalculator;
+import static com.com.poke.search.compute.Calculators.ivsInheritanceCalculator;
+import static com.com.poke.search.compute.Calculators.pidCalculator;
+import static com.com.poke.search.compute.Calculators.uninheritedNatureCalculator;
 
 
 /**
@@ -61,6 +78,8 @@ public final class Gen7FilteredOffspringSpreadCalculator implements FilteredOffs
         final List<Future<?>> spreadCheckers = new ArrayList<>();
         for (; frame < searchContext.numberOfFrames() + searchContext.initialFrame(); frame++, rng.nextInt()) {
             final MTRng rngClone = rng.cloneAndResetAdvancements();
+
+            final int[] initialSeed = rng.state();
 
             final long finalFrameCopy = frame;
             // Submit to threadPool.
@@ -135,7 +154,8 @@ public final class Gen7FilteredOffspringSpreadCalculator implements FilteredOffs
                         encryptionConstant);
 
                 // Note: 2 additional advancements are always consumed.
-                results.add(new SimpleSearchResult(offspringSpread, finalFrameCopy, rngClone.advancements() + 2));
+                results.add(new SimpleSearchResult(
+                        offspringSpread, initialSeed, finalFrameCopy, rngClone.advancements() + 2));
             }));
         }
 

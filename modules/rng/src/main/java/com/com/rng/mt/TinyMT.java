@@ -103,6 +103,14 @@ public final class TinyMT implements MTRng {
      * {@inheritDoc}
      */
     @Override
+    public int[] state() {
+        return this.currentState.clone();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MTRng cloneAndResetAdvancements() {
 
         return new TinyMT(this.currentState);

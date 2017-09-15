@@ -25,7 +25,7 @@ class SeedPanel extends JPanel implements Supplier<MTRng> {
     @Override
     public MTRng get() {
 
-        final int[] seed = new int[]{
+        final int[] seed = new int[] {
                 getValue(seed0Spinner),
                 getValue(seed1Spinner),
                 getValue(seed2Spinner),
@@ -33,6 +33,8 @@ class SeedPanel extends JPanel implements Supplier<MTRng> {
         };
         return TinyMT.fromStatus(seed);
     }
+
+
 
     private void initComponents() {
 
